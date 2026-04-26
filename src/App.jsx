@@ -124,10 +124,10 @@ function StatCounter({ num, suffix = "", label, start }) {
   const count = useCounter(num, 1600, start);
   return (
     <div style={{ textAlign: "center" }}>
-      <div style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "#0A1F3D", lineHeight: 1, fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.02em" }}>
+      <div style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "var(--text)", lineHeight: 1, fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.02em" }}>
         {count}{suffix}
       </div>
-      <div style={{ fontSize: "0.65rem", color: "#94A3B8", letterSpacing: "0.2em", textTransform: "uppercase", marginTop: "6px", fontFamily: "Georgia, serif" }}>{label}</div>
+      <div style={{ fontSize: "0.65rem", color: "var(--muted-strong)", letterSpacing: "0.2em", textTransform: "uppercase", marginTop: "6px", fontFamily: "Georgia, serif" }}>{label}</div>
     </div>
   );
 }
@@ -143,15 +143,15 @@ function Tag({ children, accent }) {
 function SectionEyebrow({ children }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "1rem" }}>
-      <div style={{ width: "32px", height: "1px", background: "#0D2E5A" }} />
-      <span style={{ fontSize: "0.65rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "#0D2E5A", fontFamily: "Georgia, serif", fontWeight: 600 }}>{children}</span>
+      <div style={{ width: "32px", height: "1px", background: "var(--accent)" }} />
+      <span style={{ fontSize: "0.65rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "var(--accent)", fontFamily: "Georgia, serif", fontWeight: 600 }}>{children}</span>
     </div>
   );
 }
 
 function SectionHeading({ children }) {
   return (
-    <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "#0A1F3D", margin: "0 0 0.3rem", lineHeight: 1.1, fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.03em" }}>
+    <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "var(--text)", margin: "0 0 0.3rem", lineHeight: 1.1, fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.03em" }}>
       {children}
     </h2>
   );
@@ -184,6 +184,18 @@ export default function App() {
     document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window === "undefined") return false;
+    const saved = window.localStorage.getItem("theme");
+    if (saved) return saved === "dark";
+    return window.matchMedia?.("(prefers-color-scheme: dark)")?.matches ?? false;
+  });
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = darkMode ? "dark" : "light";
+    window.localStorage.setItem("theme", darkMode ? "dark" : "light");
+  }, [darkMode]);
+
   const types = ["All", "Full-Stack", "Frontend", "Desktop App", "Ongoing"];
   const filtered = filter === "All" ? PROJECTS : PROJECTS.filter(p => p.type === filter);
 
@@ -195,33 +207,85 @@ export default function App() {
       <style>{`
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
-        body { font-family: 'Lora', Georgia, serif; background: #F8F7F4; color: #1a1a1a; }
-        ::selection { background: #0D2E5A; color: #fff; }
+        :root {
+          color-scheme: light;
+          --bg: #F8F7F4;
+          --surface: #ffffff;
+          --surface-soft: #EEF2F8;
+          --text: #1a1a1a;
+          --muted: #888;
+          --muted-strong: #94A3B8;
+          --border: rgba(13,46,90,0.08);
+          --accent: #0A1F3D;
+          --accent-soft: rgba(13,46,90,0.08);
+          --nav-bg: rgba(248,247,244,0.97);
+          --hero-bg: linear-gradient(135deg, #F8F7F4 0%, #EDF2F8 50%, #E8EEF6 100%);
+          --btn-bg: #0A1F3D;
+          --btn-text: #fff;
+          --btn-bg-hover: #6474d1;
+          --btn-outline-bg: transparent;
+          --btn-outline-border: rgba(13,46,90,0.2);
+          --btn-outline-hover: rgba(10,31,61,0.12);
+          --shadow: rgba(13,46,90,0.1);
+          --scrollbar-track: #F8F7F4;
+          --scrollbar-thumb: #0D2E5A;
+          --selection-bg: #0D2E5A;
+          --selection-text: #fff;
+        }
+
+        [data-theme="dark"] {
+          color-scheme: dark;
+          --bg: #030a1a;
+          --surface: #081127;
+          --surface-soft: #12213f;
+          --text: #e9f1ff;
+          --muted: #8fa7d4;
+          --muted-strong: #94a3b8;
+          --border: rgba(148,163,184,0.16);
+          --accent: #8a97ff;
+          --accent-soft: rgba(138,151,255,0.12);
+          --nav-bg: rgba(2,8,24,0.92);
+          --hero-bg: linear-gradient(135deg, #030a1a 0%, #071a45 50%, #04112b 100%);
+          --btn-bg: #8a97ff;
+          --btn-text: #081127;
+          --btn-bg-hover: #7f88ff;
+          --btn-outline-bg: rgba(255,255,255,0.05);
+          --btn-outline-border: rgba(255,255,255,0.16);
+          --btn-outline-hover: rgba(255,255,255,0.12);
+          --shadow: rgba(0,0,0,0.35);
+          --scrollbar-track: #081127;
+          --scrollbar-thumb: #8a97ff;
+          --selection-bg: #8a97ff;
+          --selection-text: #020617;
+        }
+
+        body { font-family: 'Lora', Georgia, serif; background: var(--bg); color: var(--text); }
+        ::selection { background: var(--selection-bg); color: var(--selection-text); }
         ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #F8F7F4; }
-        ::-webkit-scrollbar-thumb { background: #0D2E5A; border-radius: 2px; }
+        ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+        ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 2px; }
 
-        .nav-link { background: none; border: none; cursor: pointer; font-family: 'Lora', serif; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: #888; padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.2s, border-color 0.2s; }
-        .nav-link:hover, .nav-link.active { color: #0A1F3D; border-bottom-color: #0A1F3D; }
+        .nav-link { background: none; border: none; cursor: pointer; font-family: 'Lora', serif; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); padding: 6px 0; border-bottom: 1.5px solid transparent; transition: color 0.2s, border-color 0.2s; }
+        .nav-link:hover, .nav-link.active { color: var(--accent); border-bottom-color: var(--accent); }
 
-        .btn-primary { padding: 14px 36px; background: #0A1F3D; color: #fff; border: none; cursor: pointer; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: 'Lora', serif; transition: background 0.25s, transform 0.2s; display: inline-block; text-decoration: none; }
-        .btn-primary:hover { background: #1B4F8A; transform: translateY(-2px); }
-        .btn-outline { padding: 14px 36px; background: transparent; color: #0A1F3D; border: 1.5px solid #0A1F3D; cursor: pointer; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: 'Lora', serif; transition: all 0.25s; display: inline-block; text-decoration: none; }
-        .btn-outline:hover { background: #0A1F3D; color: #fff; }
+        .btn-primary { padding: 14px 36px; background: var(--btn-bg); color: var(--btn-text); border: none; cursor: pointer; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: 'Lora', serif; transition: background 0.25s, transform 0.2s; display: inline-block; text-decoration: none; }
+        .btn-primary:hover { background: var(--btn-bg-hover); transform: translateY(-2px); }
+        .btn-outline { padding: 14px 36px; background: var(--btn-outline-bg); color: var(--text); border: 1.5px solid var(--btn-outline-border); cursor: pointer; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: 'Lora', serif; transition: all 0.25s; display: inline-block; text-decoration: none; }
+        .btn-outline:hover { background: var(--btn-outline-hover); color: var(--btn-text); }
 
-        .project-card { background: #fff; border: 1px solid rgba(13,46,90,0.08); border-radius: 0; padding: 2rem; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+        .project-card { background: var(--surface); border: 1px solid var(--border); border-radius: 0; padding: 2rem; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s; display: flex; flex-direction: column; position: relative; overflow: hidden; }
         .project-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
         .project-card:hover::before { transform: scaleX(1); }
-        .project-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(13,46,90,0.1); }
+        .project-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px var(--shadow); }
 
-        .skill-pill { padding: 6px 14px; background: #EEF2F8; border-radius: 2px; font-size: 0.75rem; color: #2A4A7F; font-family: 'Lora', serif; transition: background 0.2s, color 0.2s; cursor: default; }
-        .skill-pill:hover { background: #0D2E5A; color: #fff; }
+        .skill-pill { padding: 6px 14px; background: var(--surface-soft); border-radius: 2px; font-size: 0.75rem; color: var(--accent); font-family: 'Lora', serif; transition: background 0.2s, color 0.2s; cursor: default; }
+        .skill-pill:hover { background: var(--accent); color: var(--btn-text); }
 
-        .blog-card { background: #fff; border: 1px solid rgba(13,46,90,0.08); padding: 2rem; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s; display: flex; flex-direction: column; }
-        .blog-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(13,46,90,0.09); }
+        .blog-card { background: var(--surface); border: 1px solid var(--border); padding: 2rem; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s; display: flex; flex-direction: column; }
+        .blog-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px var(--shadow); }
 
-        .filter-btn { padding: 7px 18px; border-radius: 0; cursor: pointer; font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: 'Lora', serif; transition: all 0.2s; border: 1px solid rgba(13,46,90,0.2); background: transparent; color: #0D2E5A; }
-        .filter-btn.active { background: #0A1F3D; color: #fff; border-color: #0A1F3D; }
+        .filter-btn { padding: 7px 18px; border-radius: 0; cursor: pointer; font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: 'Lora', serif; transition: all 0.2s; border: 1px solid var(--border); background: transparent; color: var(--text); }
+        .filter-btn.active { background: var(--btn-bg); color: var(--btn-text); border-color: var(--btn-bg); }
 
         .demo-btn { padding: 8px 18px; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; font-family: 'Lora', serif; text-decoration: none; transition: all 0.2s; border-radius: 0; display: inline-flex; align-items: center; gap: 6px; }
 
@@ -243,11 +307,11 @@ export default function App() {
         input:focus, textarea:focus { outline: none; border-color: rgba(255,255,255,0.4) !important; box-shadow: 0 0 0 3px rgba(42,110,187,0.2); }
       `}</style>
 
-      <div style={{ background: "#F8F7F4", minHeight: "100vh" }}>
+      <div style={{ background: "var(--bg)", minHeight: "100vh" }}>
 
         {/* ── NAV ── */}
-        <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 200, height: "68px", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 5vw", background: scrolled ? "rgba(248,247,244,0.97)" : "transparent", backdropFilter: scrolled ? "blur(16px)" : "none", borderBottom: scrolled ? "1px solid rgba(13,46,90,0.08)" : "none", transition: "all 0.4s ease" }}>
-          <button onClick={() => scrollTo("About")} style={{ background: "none", border: "none", cursor: "pointer", fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: "1.4rem", color: "#0A1F3D", letterSpacing: "-0.02em" }}>A·O</button>
+        <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 200, height: "68px", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 5vw", background: scrolled ? "var(--nav-bg)" : "transparent", backdropFilter: scrolled ? "blur(16px)" : "none", borderBottom: scrolled ? "1px solid var(--border)" : "none", transition: "all 0.4s ease" }}>
+          <button onClick={() => scrollTo("About")} style={{ background: "none", border: "none", cursor: "pointer", fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: "1.4rem", color: "var(--text)", letterSpacing: "-0.02em" }}>A·O</button>
           <ul style={{ display: "flex", gap: "2.2rem", listStyle: "none" }}>
             {NAV_LINKS.map(l => (
               <li key={l}>
@@ -255,11 +319,16 @@ export default function App() {
               </li>
             ))}
           </ul>
-          <a href="mailto:abdusalamoumer@example.com" className="btn-primary" style={{ padding: "9px 22px", fontSize: "0.68rem" }}>Hire Me</a>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.9rem" }}>
+            <button onClick={() => setDarkMode(prev => !prev)} className="btn-outline" style={{ padding: "9px 18px", fontSize: "0.68rem" }}>
+              {darkMode ? "Light" : "Dark"}
+            </button>
+            <a href="mailto:abdusalamoumer@example.com" className="btn-primary" style={{ padding: "9px 22px", fontSize: "0.68rem" }}>Hire Me</a>
+          </div>
         </nav>
 
         {/* ── HERO ── */}
-        <section id="about" style={{ minHeight: "100vh", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "center", padding: "100px 5vw 60px", gap: "4vw", background: "linear-gradient(135deg, #F8F7F4 0%, #EDF2F8 50%, #E8EEF6 100%)", position: "relative", overflow: "hidden" }}>
+        <section id="about" style={{ minHeight: "100vh", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "center", padding: "100px 5vw 60px", gap: "4vw", background: "var(--hero-bg)", position: "relative", overflow: "hidden" }}>
 
           {/* Background texture dots */}
           <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(13,46,90,0.04) 1px, transparent 1px)", backgroundSize: "32px 32px", pointerEvents: "none" }} />
@@ -279,16 +348,16 @@ export default function App() {
             </FadeIn>
 
             <FadeIn delay={0.2}>
-              <h1 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: "clamp(3rem, 6.5vw, 5.5rem)", lineHeight: 0.95, letterSpacing: "-0.03em", color: "#0A1F3D", marginBottom: "0.2rem" }}>Abdusalam</h1>
+              <h1 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: "clamp(3rem, 6.5vw, 5.5rem)", lineHeight: 0.95, letterSpacing: "-0.03em", color: "var(--text)", marginBottom: "0.2rem" }}>Abdusalam</h1>
               <h1 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: "clamp(3rem, 6.5vw, 5.5rem)", lineHeight: 0.95, letterSpacing: "-0.03em", background: "linear-gradient(135deg, #1B4F8A 0%, #2A6EBB 50%, #1B4F8A 100%)", backgroundSize: "200% auto", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", animation: "shimmer 4s linear infinite", marginBottom: "2rem" }}>Oumer.</h1>
             </FadeIn>
 
             <FadeIn delay={0.35}>
-              <p style={{ fontSize: "clamp(0.9rem, 1.4vw, 1rem)", color: "#4A6080", lineHeight: 1.5, marginBottom: "0.5rem", fontFamily: "'Lora', serif", fontStyle: "italic" }}>
+              <p style={{ fontSize: "clamp(0.9rem, 1.4vw, 1rem)", color: "var(--muted-strong)", lineHeight: 1.5, marginBottom: "0.5rem", fontFamily: "'Lora', serif", fontStyle: "italic" }}>
                 Full-Stack Software Engineer · AAU Software Engineering 🇪🇹
               </p>
               {/* Typing effect */}
-              <div style={{ fontSize: "clamp(0.85rem, 1.3vw, 0.95rem)", color: "#2A6EBB", fontFamily: "'Lora', serif", minHeight: "1.5rem", marginBottom: "2.2rem", fontWeight: 500 }}>
+              <div style={{ fontSize: "clamp(0.85rem, 1.3vw, 0.95rem)", color: "var(--accent)", fontFamily: "'Lora', serif", minHeight: "1.5rem", marginBottom: "2.2rem", fontWeight: 500 }}>
                 {typedText}<span className="cursor" />
               </div>
             </FadeIn>
@@ -347,19 +416,19 @@ export default function App() {
         </section>
 
         {/* ── SKILLS ── */}
-        <section id="skills" style={{ padding: "120px 5vw", background: "#fff" }}>
+        <section id="skills" style={{ padding: "120px 5vw", background: "var(--bg)" }}>
           <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
             <FadeIn>
               <SectionEyebrow>Expertise</SectionEyebrow>
               <SectionHeading>Technical Skills</SectionHeading>
-              <p style={{ color: "#64748B", marginTop: "0.8rem", fontSize: "0.92rem", maxWidth: "500px", lineHeight: 1.7 }}>Full-cycle coverage from pixel-perfect UIs to battle-tested backends, sharpened by daily algorithmic practice.</p>
+              <p style={{ color: "var(--muted-strong)", marginTop: "0.8rem", fontSize: "0.92rem", maxWidth: "500px", lineHeight: 1.7 }}>Full-cycle coverage from pixel-perfect UIs to battle-tested backends, sharpened by daily algorithmic practice.</p>
             </FadeIn>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1px", marginTop: "3.5rem", background: "rgba(13,46,90,0.08)", border: "1px solid rgba(13,46,90,0.08)" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1px", marginTop: "3.5rem", background: "var(--border)", border: "1px solid var(--border)" }}>
               {SKILLS.map((group, i) => (
                 <FadeIn key={group.category} delay={i * 0.1}>
-                  <div style={{ padding: "2rem", background: "#fff" }}>
-                    <div style={{ fontSize: "0.63rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "#0D2E5A", marginBottom: "1.2rem", fontWeight: 700, fontFamily: "'Lora', serif" }}>{group.category}</div>
+                  <div style={{ padding: "2rem", background: "var(--surface)" }}>
+                    <div style={{ fontSize: "0.63rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "var(--accent)", marginBottom: "1.2rem", fontWeight: 700, fontFamily: "'Lora', serif" }}>{group.category}</div>
                     <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
                       {group.items.map(s => <span key={s} className="skill-pill">{s}</span>)}
                     </div>
@@ -369,10 +438,10 @@ export default function App() {
             </div>
 
             <FadeIn delay={0.3}>
-              <div style={{ marginTop: "1px", padding: "1.5rem 2rem", background: "#0A1F3D", display: "flex", alignItems: "center", gap: "2rem", flexWrap: "wrap" }}>
+              <div style={{ marginTop: "1px", padding: "1.5rem 2rem", background: "var(--accent)", display: "flex", alignItems: "center", gap: "2rem", flexWrap: "wrap" }}>
                 <div style={{ fontSize: "1.4rem" }}>🧠</div>
                 <div>
-                  <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "#fff", fontFamily: "'Lora', serif" }}>Daily DSA Grinder — 2+ months consistent</div>
+                  <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--btn-text)", fontFamily: "'Lora', serif" }}>Daily DSA Grinder — 2+ months consistent</div>
                   <div style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.55)", marginTop: "3px", fontFamily: "'Lora', serif" }}>LeetCode · Codeforces · HackerRank — arrays, graphs, DP, trees, system design</div>
                 </div>
                 <div style={{ marginLeft: "auto", display: "flex", gap: "1.5rem" }}>
@@ -386,14 +455,14 @@ export default function App() {
         </section>
 
         {/* ── PROJECTS ── */}
-        <section id="projects" style={{ padding: "120px 5vw", background: "#F8F7F4" }}>
+        <section id="projects" style={{ padding: "120px 5vw", background: "var(--bg)" }}>
           <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
             <FadeIn>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "2rem", marginBottom: "3rem" }}>
                 <div>
                   <SectionEyebrow>Work</SectionEyebrow>
                   <SectionHeading>10+ Projects Shipped</SectionHeading>
-                  <p style={{ color: "#64748B", marginTop: "0.6rem", fontSize: "0.9rem", lineHeight: 1.7 }}>From fintech backends to tutoring platforms — built end-to-end, delivered on time.</p>
+                  <p style={{ color: "var(--muted-strong)", marginTop: "0.6rem", fontSize: "0.9rem", lineHeight: 1.7 }}>From fintech backends to tutoring platforms — built end-to-end, delivered on time.</p>
                 </div>
                 <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
                   {types.map(t => <button key={t} onClick={() => setFilter(t)} className={`filter-btn ${filter === t ? "active" : ""}`}>{t}</button>)}
@@ -401,7 +470,7 @@ export default function App() {
               </div>
             </FadeIn>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "1px", background: "rgba(13,46,90,0.08)" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "1px", background: "var(--border)" }}>
               {filtered.map((proj, i) => (
                 <FadeIn key={proj.name} delay={i * 0.05}>
                   <div className="project-card" style={{ "--accent": proj.accent }}>
@@ -412,8 +481,8 @@ export default function App() {
                         <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#22C55E", flexShrink: 0 }} title="Live" />
                       )}
                     </div>
-                    <h3 style={{ fontSize: "0.98rem", fontWeight: 700, color: "#0A1F3D", marginBottom: "0.75rem", lineHeight: 1.35, fontFamily: "'Playfair Display', serif" }}>{proj.name}</h3>
-                    <p style={{ fontSize: "0.82rem", color: "#64748B", lineHeight: 1.72, flex: 1, marginBottom: "1.2rem" }}>{proj.desc}</p>
+                    <h3 style={{ fontSize: "0.98rem", fontWeight: 700, color: "var(--text)", marginBottom: "0.75rem", lineHeight: 1.35, fontFamily: "'Playfair Display', serif" }}>{proj.name}</h3>
+                    <p style={{ fontSize: "0.82rem", color: "var(--muted-strong)", lineHeight: 1.72, flex: 1, marginBottom: "1.2rem" }}>{proj.desc}</p>
                     <div style={{ display: "flex", flexWrap: "wrap", gap: "5px", marginBottom: "1.4rem" }}>
                       {proj.tags.map(t => <Tag key={t} accent={proj.accent}>{t}</Tag>)}
                     </div>
@@ -423,11 +492,11 @@ export default function App() {
                           Live Demo ↗
                         </a>
                       ) : (
-                        <span className="demo-btn" style={{ background: "#F1F5F9", color: "#94A3B8", flex: 1, justifyContent: "center", cursor: "default" }}>No Demo</span>
+                        <span className="demo-btn" style={{ background: "var(--surface-soft)", color: "var(--muted-strong)", flex: 1, justifyContent: "center", cursor: "default" }}>No Demo</span>
                       )}
-                      <a href={proj.github} target="_blank" rel="noreferrer" className="demo-btn" style={{ border: "1px solid rgba(13,46,90,0.18)", color: "#0A1F3D", padding: "8px 16px" }}
-                        onMouseEnter={e => { e.currentTarget.style.background = "#0A1F3D"; e.currentTarget.style.color = "#fff"; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#0A1F3D"; }}
+                      <a href={proj.github} target="_blank" rel="noreferrer" className="demo-btn" style={{ border: "1px solid var(--border)", color: "var(--text)", padding: "8px 16px" }}
+                        onMouseEnter={e => { e.currentTarget.style.background = "var(--accent)"; e.currentTarget.style.color = "var(--btn-text)"; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--text)"; }}
                       >
                         GitHub
                       </a>
@@ -440,7 +509,7 @@ export default function App() {
         </section>
 
         {/* ── EXPERIENCE ── */}
-        <section id="experience" style={{ padding: "120px 5vw", background: "#fff" }}>
+        <section id="experience" style={{ padding: "120px 5vw", background: "var(--bg)" }}>
           <div style={{ maxWidth: "900px", margin: "0 auto" }}>
             <FadeIn>
               <SectionEyebrow>Career</SectionEyebrow>
@@ -450,17 +519,17 @@ export default function App() {
             <div style={{ marginTop: "4rem" }}>
               {EXPERIENCE.map((exp, i) => (
                 <FadeIn key={exp.company} delay={i * 0.15}>
-                  <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: "0 3rem", marginBottom: "3.5rem", paddingBottom: "3.5rem", borderBottom: i < EXPERIENCE.length - 1 ? "1px solid rgba(13,46,90,0.08)" : "none" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "140px 1fr", gap: "0 3rem", marginBottom: "3.5rem", paddingBottom: "3.5rem", borderBottom: i < EXPERIENCE.length - 1 ? "1px solid var(--border)" : "none" }}>
                     {/* Left: period + company */}
                     <div>
-                      <div style={{ fontSize: "0.65rem", letterSpacing: "0.12em", color: "#94A3B8", textTransform: "uppercase", fontFamily: "'Lora', serif", lineHeight: 1.5 }}>{exp.period}</div>
-                      <div style={{ width: "24px", height: "2px", background: "#0D2E5A", margin: "12px 0" }} />
-                      <div style={{ fontSize: "0.78rem", color: "#0D2E5A", fontWeight: 600, fontFamily: "'Lora', serif" }}>{exp.company}</div>
+                      <div style={{ fontSize: "0.65rem", letterSpacing: "0.12em", color: "var(--muted-strong)", textTransform: "uppercase", fontFamily: "'Lora', serif", lineHeight: 1.5 }}>{exp.period}</div>
+                      <div style={{ width: "24px", height: "2px", background: "var(--accent)", margin: "12px 0" }} />
+                      <div style={{ fontSize: "0.78rem", color: "var(--accent)", fontWeight: 600, fontFamily: "'Lora', serif" }}>{exp.company}</div>
                     </div>
                     {/* Right: details */}
                     <div>
-                      <div style={{ fontSize: "1.1rem", fontWeight: 700, color: "#0A1F3D", fontFamily: "'Playfair Display', serif", marginBottom: "0.8rem" }}>{exp.role}</div>
-                      <p style={{ fontSize: "0.87rem", color: "#64748B", lineHeight: 1.8, marginBottom: "1.2rem" }}>{exp.desc}</p>
+                      <div style={{ fontSize: "1.1rem", fontWeight: 700, color: "var(--text)", fontFamily: "'Playfair Display', serif", marginBottom: "0.8rem" }}>{exp.role}</div>
+                      <p style={{ fontSize: "0.87rem", color: "var(--muted-strong)", lineHeight: 1.8, marginBottom: "1.2rem" }}>{exp.desc}</p>
                       <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
                         {exp.tags.map(t => <Tag key={t}>{t}</Tag>)}
                       </div>
@@ -472,13 +541,13 @@ export default function App() {
 
             {/* Certs */}
             <FadeIn delay={0.2}>
-              <div style={{ borderTop: "1px solid rgba(13,46,90,0.08)", paddingTop: "3rem" }}>
-                <div style={{ fontSize: "0.63rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "#0D2E5A", marginBottom: "1.5rem", fontFamily: "'Lora', serif", fontWeight: 700 }}>Certifications</div>
+              <div style={{ borderTop: "1px solid var(--border)", paddingTop: "3rem" }}>
+                <div style={{ fontSize: "0.63rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "var(--accent)", marginBottom: "1.5rem", fontFamily: "'Lora', serif", fontWeight: 700 }}>Certifications</div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
                   {CERTS.map(c => (
-                    <div key={c.title} style={{ padding: "1.2rem 1.6rem", border: "1px solid rgba(13,46,90,0.1)", background: "#F8F7F4", flex: "1 1 220px" }}>
-                      <div style={{ fontSize: "0.88rem", fontWeight: 700, color: "#0A1F3D", fontFamily: "'Playfair Display', serif", marginBottom: "4px" }}>{c.title}</div>
-                      <div style={{ fontSize: "0.72rem", color: "#94A3B8", fontFamily: "'Lora', serif" }}>{c.provider} · {c.date}</div>
+                    <div key={c.title} style={{ padding: "1.2rem 1.6rem", border: "1px solid var(--border)", background: "var(--surface-soft)", flex: "1 1 220px" }}>
+                      <div style={{ fontSize: "0.88rem", fontWeight: 700, color: "var(--text)", fontFamily: "'Playfair Display', serif", marginBottom: "4px" }}>{c.title}</div>
+                      <div style={{ fontSize: "0.72rem", color: "var(--muted-strong)", fontFamily: "'Lora', serif" }}>{c.provider} · {c.date}</div>
                     </div>
                   ))}
                 </div>
@@ -488,26 +557,26 @@ export default function App() {
         </section>
 
         {/* ── BLOG ── */}
-        <section id="blog" style={{ padding: "120px 5vw", background: "#F8F7F4" }}>
+        <section id="blog" style={{ padding: "120px 5vw", background: "var(--bg)" }}>
           <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
             <FadeIn>
               <SectionEyebrow>Writing</SectionEyebrow>
               <SectionHeading>Blog</SectionHeading>
-              <p style={{ color: "#64748B", marginTop: "0.6rem", fontSize: "0.9rem", lineHeight: 1.7 }}>Thoughts on full-stack development, building for the Ethiopian market, and algorithms.</p>
+              <p style={{ color: "var(--muted-strong)", marginTop: "0.6rem", fontSize: "0.9rem", lineHeight: 1.7 }}>Thoughts on full-stack development, building for the Ethiopian market, and algorithms.</p>
             </FadeIn>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1px", background: "rgba(13,46,90,0.08)", marginTop: "3.5rem" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1px", background: "var(--border)", marginTop: "3.5rem" }}>
               {BLOG.map((post, i) => (
                 <FadeIn key={post.title} delay={i * 0.1}>
                   <div className="blog-card">
                     <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "1.2rem" }}>
-                      <span style={{ fontSize: "0.65rem", color: "#94A3B8", letterSpacing: "0.08em", fontFamily: "'Lora', serif" }}>{post.date}</span>
-                      <span style={{ fontSize: "0.65rem", color: "#0D2E5A", letterSpacing: "0.08em", fontFamily: "'Lora', serif" }}>{post.readTime} read</span>
+                      <span style={{ fontSize: "0.65rem", color: "var(--muted)", letterSpacing: "0.08em", fontFamily: "'Lora', serif" }}>{post.date}</span>
+                      <span style={{ fontSize: "0.65rem", color: "var(--accent)", letterSpacing: "0.08em", fontFamily: "'Lora', serif" }}>{post.readTime} read</span>
                     </div>
-                    <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "#0A1F3D", margin: "0 0 0.75rem", lineHeight: 1.4, flex: 1, fontFamily: "'Playfair Display', serif" }}>{post.title}</h3>
-                    <p style={{ fontSize: "0.82rem", color: "#64748B", lineHeight: 1.75, margin: "0 0 1.4rem" }}>{post.excerpt}</p>
-                    <a href="#" style={{ fontSize: "0.7rem", color: "#0D2E5A", textDecoration: "none", letterSpacing: "0.15em", textTransform: "uppercase", borderBottom: "1px solid #0D2E5A", paddingBottom: "1px", alignSelf: "flex-start", fontFamily: "'Lora', serif", transition: "color 0.2s" }}
-                      onMouseEnter={e => e.currentTarget.style.color = "#2A6EBB"}
-                      onMouseLeave={e => e.currentTarget.style.color = "#0D2E5A"}
+                    <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "var(--text)", margin: "0 0 0.75rem", lineHeight: 1.4, flex: 1, fontFamily: "'Playfair Display', serif" }}>{post.title}</h3>
+                    <p style={{ fontSize: "0.82rem", color: "var(--muted-strong)", lineHeight: 1.75, margin: "0 0 1.4rem" }}>{post.excerpt}</p>
+                    <a href="#" style={{ fontSize: "0.7rem", color: "var(--accent)", textDecoration: "none", letterSpacing: "0.15em", textTransform: "uppercase", borderBottom: "1px solid var(--accent)", paddingBottom: "1px", alignSelf: "flex-start", fontFamily: "'Lora', serif", transition: "color 0.2s" }}
+                      onMouseEnter={e => e.currentTarget.style.color = "var(--accent)"}
+                      onMouseLeave={e => e.currentTarget.style.color = "var(--accent)"}
                     >Read More →</a>
                   </div>
                 </FadeIn>
