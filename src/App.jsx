@@ -305,6 +305,25 @@ export default function App() {
 
         input, textarea { transition: border-color 0.2s, box-shadow 0.2s; }
         input:focus, textarea:focus { outline: none; border-color: rgba(255,255,255,0.4) !important; box-shadow: 0 0 0 3px rgba(42,110,187,0.2); }
+        .nav-mobile-email { display: none; }
+@media (max-width: 768px) {
+  .nav-links-list { display: none !important; }
+  .nav-hire-btn { display: none !important; }
+  .nav-mobile-email { display: flex !important; align-items: center; }
+  .hero-grid { grid-template-columns: 1fr !important; padding: 90px 5vw 60px !important; }
+  .hero-photo { order: -1; justify-content: center !important; }
+  .hero-photo img { width: clamp(160px, 55vw, 240px) !important; height: clamp(200px, 68vw, 300px) !important; }
+  .hero-left { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .hero-available { align-self: center; }
+  .hero-buttons { justify-content: center !important; }
+  .hero-stats { justify-content: center !important; }
+  .contact-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
+  .exp-row { grid-template-columns: 1fr !important; gap: 0.5rem 0 !important; }
+  .section-pad { padding: 70px 5vw !important; }
+  .dsa-bar { flex-direction: column !important; gap: 1rem !important; }
+  .dsa-platforms { margin-left: 0 !important; }
+  .projects-header { flex-direction: column !important; align-items: flex-start !important; }
+}
       `}</style>
 
       <div style={{ background: "var(--bg)", minHeight: "100vh" }}>
@@ -323,7 +342,7 @@ export default function App() {
             <button onClick={() => setDarkMode(prev => !prev)} className="btn-outline" style={{ padding: "9px 18px", fontSize: "0.68rem" }}>
               {darkMode ? "Light" : "Dark"}
             </button>
-            <a href="mailto:abdusalamoumer@example.com" className="btn-primary" style={{ padding: "9px 22px", fontSize: "0.68rem" }}>Hire Me</a>
+            <a href="mailto:oumersalah2@gmail.com" className="btn-primary" style={{ padding: "9px 22px", fontSize: "0.68rem" }}>Hire Me</a>
           </div>
         </nav>
 
