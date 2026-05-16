@@ -5,26 +5,30 @@ const PHOTO_B64 = "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMDAgQDAwMEBAQFBgoGBgUFB
 const NAV_LINKS = ["About", "Skills", "Projects", "Experience", "Blog", "Contact"];
 
 const SKILLS = [
-  { category: "Frontend", items: ["React", "Next.js", "TypeScript", "JavaScript", "Tailwind CSS", "HTML5", "CSS3"] },
-  { category: "Backend", items: ["Node.js", "Express", "Django", "NestJS", "Python", "REST APIs"] },
-  { category: "Databases", items: ["PostgreSQL", "MongoDB", "MySQL"] },
-  { category: "Core & Tools", items: ["Java", "JavaFX", "Git", "GitHub", "DSA & Algorithms", "OOP"] },
+  { category: "Frontend", items: ["Next.js", "React", "TypeScript", "JavaScript", "Tailwind CSS"] },
+  { category: "Backend", items: ["Node.js", "Express", "Django", "Python"] },
+  { category: "Databases & Cloud", items: ["Supabase", "PostgreSQL", "MongoDB", "Railway", "Vercel"] },
+  { category: "AI & Integrations", items: ["Groq AI", "Gemini API", "OpenAI API", "Telegram Bot API"] },
+  { category: "Tools", items: ["Git", "Java", "REST APIs", "DSA · Algorithms"] },
 ];
 
 const TYPING_LINES = [
-  "Building scalable systems from schema to UI.",
-  "Full-Stack · React · Django · Node.js · Java.",
-  "Open to remote & global collaborations.",
+  "Next.js · Supabase · Node.js · AI Integration.",
+  "Built a live AI bot serving Ethiopian farmers.",
+  "Full-stack from schema to UI — PostgreSQL to Next.js.",
   "Daily LeetCode · Codeforces · HackerRank grinder.",
+  "Open to remote freelance · global collaborations.",
 ];
 
 const PROJECTS = [
+  { name: "Gebere Vision AI", desc: "AI-powered Telegram bot that diagnoses crop diseases for Ethiopian farmers in Amharic and Afaan Oromo. Photo-based diagnosis with treatment plans in under 30 seconds — deployed 24/7 on Railway.", tags: ["Node.js", "Groq AI", "Supabase", "PostgreSQL", "Telegram Bot API"], type: "AI", accent: "#16A34A", demo: "https://t.me/gebere_vision_bot", github: "https://github.com/oumersalah2-cmd/gebere-vision-ai" },
   { name: "LAMIF — Tutoring & Education Platform", desc: "Premium MERN-stack tutoring marketplace connecting students with qualified instructors across Ethiopia. Features instructor discovery, session booking, and matching logic.", tags: ["React", "Node.js", "MongoDB", "Express", "Tailwind CSS"], type: "Full-Stack", accent: "#1B4F8A", demo: "https://lamif-platform.vercel.app/", github: "https://github.com/oumersalah2-cmd" },
   { name: "Ethio Bucks — Task & Reward Platform", desc: "Transaction-heavy financial rewards backend for the Ethiopian market. Mobile-first ETB wallet, task completion flows, referral system, and daily bonus claiming.", tags: ["Django", "PostgreSQL", "Python", "Mobile-First"], type: "Full-Stack", accent: "#1A6B4A", demo: "http://abdusalam.pythonanywhere.com", github: "https://github.com/oumersalah2-cmd" },
-  { name: "Seif Online Services", desc: "Professional service platform for passport processing and government application support. Bilingual-ready UI with service tiers, pricing tables, and a contact workflow.", tags: ["React", "Next.js", "Tailwind CSS"], type: "Full-Stack", accent: "#4A3580", demo: "https://seif-online-services.vercel.app/", github: "https://github.com/oumersalah2-cmd" },
+  { name: "ConsultAI", desc: "AI-powered consulting platform built with Next.js and TypeScript. Features dynamic prompt flows, streaming responses, and a clean chat-style interface for intelligent consultations.", tags: ["Next.js", "TypeScript", "AI APIs", "Tailwind CSS"], type: "AI", accent: "#7C3AED", demo: "https://v0-consult-ai-five.vercel.app/", github: "https://github.com/oumersalah2-cmd/consultaiv1" },
+  { name: "AAU Café Management System", desc: "Full-stack campus café ordering system for Addis Ababa University. Digitises meal attendance, automates 3,000 ETB monthly stipend payments, and prevents dual-claiming fraud with database-level constraints.", tags: ["Node.js", "Express", "PostgreSQL", "JWT Auth"], type: "Full-Stack", accent: "#0F6E7A", demo: "https://addis-ababa-university-cafe-management.onrender.com/", github: "https://github.com/oumersalah2-cmd/Addis-Ababa-University-Cafe-Management-and-Stipend-System" },
   { name: "Jabalu — Story to Web", desc: "Transformed a Facebook written narrative into an immersive web reading experience with chapter navigation, animated transitions, and mobile-first presentation.", tags: ["React", "Next.js", "Tailwind CSS"], type: "Full-Stack", accent: "#7A3B1E", demo: "https://ahmedinjebalaksum.vercel.app/", github: "https://github.com/oumersalah2-cmd" },
-  { name: "AAU Café Management System", desc: "Real-time campus café ordering system for Addis Ababa University. Handles menu management, live order tracking, and a kitchen dashboard on a PostgreSQL backend.", tags: ["JavaScript", "PostgreSQL", "Node.js", "Express"], type: "Full-Stack", accent: "#0F6E7A", demo: "https://addis-ababa-university-cafe-management.onrender.com/", github: "https://github.com/oumersalah2-cmd" },
- ];
+  { name: "Seif Online Services", desc: "Professional service platform for passport processing and government application support. Bilingual-ready UI with service tiers, pricing tables, and a contact workflow.", tags: ["React", "Next.js", "Tailwind CSS"], type: "Full-Stack", accent: "#4A3580", demo: "https://seif-online-services.vercel.app/", github: "https://github.com/oumersalah2-cmd" },
+];
 
 const EXPERIENCE = [
   { role: "Full-Stack Web Developer", company: "Lamif Digital Aid", period: "Feb 2024 – Mar 2026", desc: "Expert-vetted full-stack developer building modern, scalable web applications. Designed responsive frontends with React and Next.js, developed secure backend APIs with Node.js, Express, and Django, and managed relational and document databases.", tags: ["React", "Next.js", "Node.js", "Django", "PostgreSQL", "MongoDB"] },
@@ -191,7 +195,7 @@ export default function App() {
     window.localStorage.setItem("theme", darkMode ? "dark" : "light");
   }, [darkMode]);
 
-  const types = ["All", "Full-Stack", "Frontend", "Desktop App", "Ongoing"];
+  const types = ["All", "Full-Stack", "AI"];
   const filtered = filter === "All" ? PROJECTS : PROJECTS.filter(p => p.type === filter);
 
   return (
@@ -254,6 +258,7 @@ export default function App() {
           --selection-text: #020617;
         }
 
+        html, body { min-width: 0; overflow-x: hidden; }
         body { font-family: 'Lora', Georgia, serif; background: var(--bg); color: var(--text); }
         ::selection { background: var(--selection-bg); color: var(--selection-text); }
         ::-webkit-scrollbar { width: 4px; }
@@ -303,7 +308,7 @@ export default function App() {
         .nav-mobile-email { display: none; }
 @media (max-width: 768px) {
   .nav-links-list { display: none !important; }
-  .nav-hire-btn { display: none !important; }
+  .nav-hire-btn { display: inline-flex !important; }
   .nav-mobile-email { display: flex !important; align-items: center; }
   .hero-grid { grid-template-columns: 1fr !important; padding: 90px 5vw 60px !important; }
   .hero-photo { order: -1; justify-content: center !important; }
@@ -326,7 +331,7 @@ export default function App() {
         {/* ── NAV ── */}
         <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 200, height: "68px", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 5vw", background: scrolled ? "var(--nav-bg)" : "transparent", backdropFilter: scrolled ? "blur(16px)" : "none", borderBottom: scrolled ? "1px solid var(--border)" : "none", transition: "all 0.4s ease" }}>
           <button onClick={() => scrollTo("About")} style={{ background: "none", border: "none", cursor: "pointer", fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: "1.4rem", color: "var(--text)", letterSpacing: "-0.02em" }}>A·O</button>
-          <ul style={{ display: "flex", gap: "2.2rem", listStyle: "none" }}>
+          <ul className="nav-links-list" style={{ display: "flex", gap: "2.2rem", listStyle: "none" }}>
             {NAV_LINKS.map(l => (
               <li key={l}>
                 <button onClick={() => scrollTo(l)} className={`nav-link ${active === l ? "active" : ""}`}>{l}</button>
@@ -337,12 +342,12 @@ export default function App() {
             <button onClick={() => setDarkMode(prev => !prev)} className="btn-outline" style={{ padding: "9px 18px", fontSize: "0.68rem" }}>
               {darkMode ? "Light" : "Dark"}
             </button>
-            <a href="mailto:oumersalah2@gmail.com" className="btn-primary" style={{ padding: "9px 22px", fontSize: "0.68rem" }}>Hire Me</a>
+            <a href="mailto:oumersalah2@gmail.com" className="btn-primary nav-hire-btn" style={{ padding: "9px 22px", fontSize: "0.68rem" }}>Hire Me</a>
           </div>
         </nav>
 
         {/* ── HERO ── */}
-        <section id="about" style={{ minHeight: "100vh", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "center", padding: "100px 5vw 60px", gap: "4vw", background: "var(--hero-bg)", position: "relative", overflow: "hidden" }}>
+        <section id="about" className="hero-grid" style={{ minHeight: "100vh", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "center", padding: "100px 5vw 60px", gap: "4vw", background: "var(--hero-bg)", position: "relative", overflow: "hidden" }}>
 
           {/* Background texture dots */}
           <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(13,46,90,0.04) 1px, transparent 1px)", backgroundSize: "32px 32px", pointerEvents: "none" }} />
@@ -351,7 +356,7 @@ export default function App() {
           <div style={{ position: "absolute", right: "-2vw", top: "50%", transform: "translateY(-50%)", fontSize: "clamp(120px, 18vw, 240px)", fontWeight: 900, color: "rgba(13,46,90,0.03)", fontFamily: "'Playfair Display', serif", lineHeight: 1, pointerEvents: "none", userSelect: "none", letterSpacing: "-0.05em" }}>DEV</div>
 
           {/* LEFT */}
-          <div style={{ zIndex: 1 }}>
+          <div className="hero-left" style={{ zIndex: 1 }}>
             <FadeIn delay={0.1}>
               <div style={{ display: "inline-flex", alignItems: "center", gap: "10px", padding: "7px 18px", border: "1px solid rgba(42,110,187,0.4)", marginBottom: "2rem", background: "rgba(10,31,61,0.07)", backdropFilter: "blur(8px)" }}>
                 <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#22C55E", display: "inline-block", position: "relative", flexShrink: 0 }}>
@@ -377,7 +382,7 @@ export default function App() {
             </FadeIn>
 
             <FadeIn delay={0.5}>
-              <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginBottom: "3rem" }}>
+              <div className="hero-buttons" style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginBottom: "3rem" }}>
                 <button onClick={() => scrollTo("Projects")} className="btn-primary">View Projects</button>
                 <button onClick={() => scrollTo("Contact")} className="btn-outline">Get in Touch</button>
               </div>
@@ -385,8 +390,8 @@ export default function App() {
 
             {/* Stats */}
             <FadeIn delay={0.65}>
-              <div ref={statsRef} style={{ display: "flex", gap: "0", borderTop: "1px solid rgba(13,46,90,0.1)", paddingTop: "2rem" }}>
-                {[{ num: 10, suffix: "+", label: "Projects Shipped" }, { num: 2, suffix: "+", label: "Years Building" }, { num: 4, suffix: "", label: "Tech Stacks" }].map((s, i) => (
+              <div ref={statsRef} className="hero-stats" style={{ display: "flex", gap: "0", borderTop: "1px solid rgba(13,46,90,0.1)", paddingTop: "2rem" }}>
+                {[{ num: 10, suffix: "+", label: "Projects Shipped" }, { num: 2, suffix: "+", label: "Years Building" }, { num: 5, suffix: "", label: "Tech Stacks" }].map((s, i) => (
                   <div key={s.label} style={{ flex: 1, paddingLeft: i > 0 ? "1.5rem" : 0, borderLeft: i > 0 ? "1px solid rgba(13,46,90,0.1)" : "none", marginLeft: i > 0 ? "1.5rem" : 0 }}>
                     <StatCounter {...s} start={statsVisible} />
                   </div>
@@ -396,18 +401,19 @@ export default function App() {
           </div>
 
           {/* RIGHT — Photo */}
-          <FadeIn delay={0.3} direction="right" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <div className="photo-float" style={{ position: "relative", zIndex: 1 }}>
-              {/* Offset border — sits behind and slightly shifted, editorial feel */}
-              <div style={{
-                position: "absolute",
-                inset: 0,
-                top: "16px", left: "16px",
-                border: "1px solid rgba(42,110,187,0.25)",
-                borderRadius: "2px",
-                zIndex: 0,
-                pointerEvents: "none",
-              }} />
+          <FadeIn delay={0.3} direction="right">
+            <div className="hero-photo" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+              <div className="photo-float" style={{ position: "relative", zIndex: 1 }}>
+                {/* Offset border — sits behind and slightly shifted, editorial feel */}
+                <div style={{
+                  position: "absolute",
+                  inset: 0,
+                  top: "16px", left: "16px",
+                  border: "1px solid rgba(42,110,187,0.25)",
+                  borderRadius: "2px",
+                  zIndex: 0,
+                  pointerEvents: "none",
+                }} />
               {/* The photo — clean, no overlays */}
               <img
                 src={`data:image/jpeg;base64,${PHOTO_B64}`}
@@ -425,6 +431,7 @@ export default function App() {
                   filter: "contrast(1.04) saturate(0.92)",
                 }}
               />
+            </div>
             </div>
           </FadeIn>
         </section>
@@ -475,8 +482,8 @@ export default function App() {
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "2rem", marginBottom: "3rem" }}>
                 <div>
                   <SectionEyebrow>Work</SectionEyebrow>
-                  <SectionHeading>10+ Projects Shipped</SectionHeading>
-                  <p style={{ color: "var(--muted-strong)", marginTop: "0.6rem", fontSize: "0.9rem", lineHeight: 1.7 }}>From fintech backends to tutoring platforms — built end-to-end, delivered on time.</p>
+                  <SectionHeading>Featured Projects</SectionHeading>
+                  <p style={{ color: "var(--muted-strong)", marginTop: "0.6rem", fontSize: "0.9rem", lineHeight: 1.7 }}>Production apps with live demos — from fintech backends to tutoring platforms, built end-to-end.</p>
                 </div>
                 <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
                   {types.map(t => <button key={t} onClick={() => setFilter(t)} className={`filter-btn ${filter === t ? "active" : ""}`}>{t}</button>)}
@@ -639,7 +646,7 @@ export default function App() {
                 </div>
 
                 {/* Right: form */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                <div className="contact-grid" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                   {[{ ph: "Your name", type: "text" }, { ph: "Your email", type: "email" }].map(({ ph, type }) => (
                     <input key={ph} placeholder={ph} type={type} style={{ padding: "14px 18px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#fff", fontSize: "0.87rem", fontFamily: "'Lora', serif", width: "100%" }} />
                   ))}
@@ -647,6 +654,13 @@ export default function App() {
                   <button className="btn-primary" style={{ background: "#2A6EBB", width: "100%", textAlign: "center", marginTop: "0.5rem" }}
                     onMouseEnter={e => e.currentTarget.style.background = "#1B4F8A"}
                     onMouseLeave={e => e.currentTarget.style.background = "#2A6EBB"}
+                    onClick={() => {
+                      const name = document.querySelector('input[placeholder="Your name"]')?.value || '';
+                      const email = document.querySelector('input[placeholder="Your email"]')?.value || '';
+                      const message = document.querySelector('textarea')?.value || '';
+                      if (!name || !email || !message) { alert('Please fill in all fields.'); return; }
+                      window.location.href = `mailto:oumersalah2@gmail.com?subject=Portfolio Contact from ${encodeURIComponent(name)}&body=${encodeURIComponent(`From: ${name}\nEmail: ${email}\n\n${message}`)}`;
+                    }}
                   >Send Message</button>
                 </div>
               </div>
